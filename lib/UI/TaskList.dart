@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_todo_list/UI/SqlTest.dart';
 
 class TaskList extends StatelessWidget {
   @override
@@ -10,11 +11,17 @@ class TaskList extends StatelessWidget {
         title: Text('Task List'),
       ),
       body: Container(
-        child: Center(
-            child:Text('All the tasks will be displayed here')
-        ),
+        child: Center(child: Text('All the tasks will be displayed here')),
         width: width,
         height: height,
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.storage),
+        onPressed: () => Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => SqlTest()),
+          (Route<dynamic> route) => false,
+        ),
       ),
     );
   }
