@@ -8,15 +8,22 @@ class Task {
   int priority = 3;
 
   Task(this.name, this.description, this.dueDateTime, this.priority);
-  Task.withId(this.id, this.name, this.description, this.dueDateTime, this.priority);
 
-  Map toMap() {
-    return {
-      "id": id,
-      "name": name,
-      "description": description,
-      "dueDateTime": dueDateTime,
-      "priority": priority
-    };
+  Task.withId(this.id, this.name, this.description, this.dueDateTime,
+      this.priority);
+
+  Map<String, dynamic> toMap() {
+    var map = Map<String, dynamic>();
+    map["name"] = name;
+    map["description"] = description;
+    map["dueDateTime"] = dueDateTime;
+    map["priority"] = priority;
+
+    if(id!=null)
+    {
+      map["id"] = id;
+    }
+
+    return map;
   }
 }
