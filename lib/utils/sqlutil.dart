@@ -33,7 +33,7 @@ class SqlUtil
 
   Future<Database> initializeDb() async
   {
-    return await openDatabase('TaskDb.db',onCreate: createDbTable);
+    return await openDatabase('TaskDb.db',onCreate: createDbTable, version: 1);
   }
 
   String tableName = "Task";
@@ -50,4 +50,23 @@ class SqlUtil
     return await db.insert(_tableName,taskToBeInserted.toMap());
   }
 
+  Future<List<Map<String,Object>>> getAllTasksDb() async
+  {
+    var database = await db;
+    return await database.rawQuery('SELECT * FROM $_tableName');
+  }
+
+  Future<int>getCountDb() async
+  {
+    var database = await db;
+    var res = await database.rawQuery('SELECT COUNT(*) FROM $_tableName');
+    return Sqflite.firstIntValue(res);
+  }
+  Future<int>deleteFromDb(int idToDelete) async
+  {
+    var database = await db;
+    var res = await database.delete(_tableName,where: 'id = ?', whereArgs: [idToDelete]);
+    return res;
+  }
+  
 }
