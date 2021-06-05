@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_todo_list/Models/Task.dart';
 import 'package:my_todo_list/utils/sqlutil.dart';
+import 'dart:math';
 
 class SqlTest extends StatefulWidget {
   const SqlTest({Key? key}) : super(key: key);
@@ -74,8 +75,8 @@ class _SqlTestState extends State<SqlTest> {
         elevation: 2.0,
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: Colors.green,
-            child: Text(tasks[position].priority.toString()),
+            backgroundColor: Task.colors[(tasks[position].priority)-1],
+            child: Text(Task.priorities[(tasks[position].priority)-1]),
           ),
           title: Text(tasks[position].name),
           subtitle: Text(tasks[position].description),
@@ -103,7 +104,7 @@ class _SqlTestState extends State<SqlTest> {
     String taskName = "Task " + (count+1).toString();
     String taskDescription = "Description " + (count+1).toString();
     String dueDateTime = "Tomorrow";
-    int priority = 3;
+    int priority = (Random().nextInt(3))+1;
     Task taskToInsert = Task(taskName,taskDescription,dueDateTime,priority);
 
     int res =await sqlUtil.insertDb(taskToInsert);

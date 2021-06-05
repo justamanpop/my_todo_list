@@ -1,11 +1,16 @@
 //@dart=2.9
 
+import 'package:flutter/material.dart';
+
 class Task {
   int id;
   String name;
   String description = "";
   String dueDateTime;
   int priority = 3;
+
+  static List<String> priorities = ["High", "Med", "Low"];
+  static List<Color> colors = [Colors.red, Colors.yellow, Colors.green];
 
   Task(this.name, this.description, this.dueDateTime, this.priority);
 

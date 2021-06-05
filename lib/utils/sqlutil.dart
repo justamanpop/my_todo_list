@@ -62,6 +62,7 @@ class SqlUtil
     var res = await database.rawQuery('SELECT COUNT(*) FROM $_tableName');
     return Sqflite.firstIntValue(res);
   }
+
   Future<int>deleteFromDb(int idToDelete) async
   {
     var database = await db;
