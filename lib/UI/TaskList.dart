@@ -30,6 +30,7 @@ class _TaskListState extends State<TaskList> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
+            heroTag: 'TestingPage',
             child: Icon(Icons.storage),
             onPressed: () => Navigator.push(
               context,
@@ -40,6 +41,7 @@ class _TaskListState extends State<TaskList> {
             height: 20,
           ),
           FloatingActionButton(
+            heroTag: 'AddPage',
             child: Icon(Icons.add),
             onPressed: () => Navigator.push(
               context,
