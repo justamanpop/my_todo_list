@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_todo_list/UI/AddOrEditTask.dart';
 import 'package:my_todo_list/UI/SqlTest.dart';
 import 'package:my_todo_list/utils/sqlutil.dart';
 import 'package:my_todo_list/Models/Task.dart';
@@ -45,7 +46,7 @@ class _TaskListState extends State<TaskList> {
             child: Icon(Icons.add),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SqlTest()),
+              MaterialPageRoute(builder: (context) => AddOrEditTask(Task('','','',3))),
               // (Route<dynamic> route) => false,
             ),
           ),
