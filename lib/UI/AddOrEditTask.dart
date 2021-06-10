@@ -35,11 +35,16 @@ class _AddOrEditTaskState extends State<AddOrEditTask> {
                 height: 20,
               ),
               TextFormField(
+                validator: (String? val){
+                  if(val.toString().isEmpty)
+                    return "Please enter the title";
+                  return null;
+                },
                 autofocus: true,
                 maxLength: 255,
                 initialValue: task.name,
                 decoration: InputDecoration(
-                    labelText: "Name",
+                    labelText: "Title",
                     labelStyle: Theme.of(context).textTheme.headline6,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
@@ -49,7 +54,8 @@ class _AddOrEditTaskState extends State<AddOrEditTask> {
                 height: 20,
               ),
               TextFormField(
-                initialValue: task.name,
+                initialValue: task.description,
+                maxLength: 255,
                 decoration: InputDecoration(
                     labelText: "Description",
                     labelStyle: Theme.of(context).textTheme.headline6,
@@ -61,9 +67,14 @@ class _AddOrEditTaskState extends State<AddOrEditTask> {
                 height: 20,
               ),
               DateTimeFormField(
+                validator: (DateTime? val){
+                  if(val==null)
+                    return "Please enter a date";
+                  return null;
+                },
                 decoration: InputDecoration(
                     labelText: "Due Date",
-                    labelStyle: Theme.of(context).textTheme.headline5,
+                    labelStyle: Theme.of(context).textTheme.headline6,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     )),
@@ -104,7 +115,7 @@ class _AddOrEditTaskState extends State<AddOrEditTask> {
                 },
               ),
               SizedBox(
-                height: 280,
+                height: 240,
               ),
               Row(
                 children: <Widget>[
@@ -124,7 +135,7 @@ class _AddOrEditTaskState extends State<AddOrEditTask> {
                   Expanded(
                       child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            formKey.currentState?.validate();
                           },
                           child: Text('Submit'))),
                   SizedBox(width: 10),
