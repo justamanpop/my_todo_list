@@ -5,17 +5,17 @@ import 'package:my_todo_list/utils/sqlutil.dart';
 
 class AddOrEditTask extends StatefulWidget {
   final Task task;
-
-  AddOrEditTask(this.task);
+  final bool isUpdate;
+  AddOrEditTask(this.task,this.isUpdate);
 
   @override
-  _AddOrEditTaskState createState() => _AddOrEditTaskState(task);
+  _AddOrEditTaskState createState() => _AddOrEditTaskState(task,isUpdate);
 }
 
 class _AddOrEditTaskState extends State<AddOrEditTask> {
   Task task;
-
-  _AddOrEditTaskState(this.task);
+  bool isUpdate;
+  _AddOrEditTaskState(this.task,this.isUpdate);
 
   var formKey = GlobalKey<FormState>();
   String dropdownValue = "Low";
@@ -167,7 +167,12 @@ class _AddOrEditTaskState extends State<AddOrEditTask> {
                               task.name = titleController.text;
                               task.description = descriptionController.text;
                               task.dueDateTime = dateTimeVal;
-                              sqlUtil.insertDb(task);
+
+                              if(!isUpdate)
+                                sqlUtil.insertDb(task);
+                              else
+                                sqlUtil.updateDb(task);
+
                               Navigator.pop(context);
                             }
                           },

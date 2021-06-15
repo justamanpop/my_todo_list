@@ -50,6 +50,12 @@ class SqlUtil
     return await db.insert(_tableName,taskToBeInserted.toMap());
   }
 
+  Future<int> updateDb(Task taskToBeUpdated) async
+  {
+    var db = await this.db;
+    return await db.update(_tableName, taskToBeUpdated.toMap(),where: 'id = ?', whereArgs: [taskToBeUpdated.id]);
+  }
+
   Future<List<Map<String,Object>>> getAllTasksDb() async
   {
     var database = await db;

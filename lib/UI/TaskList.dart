@@ -46,7 +46,7 @@ class _TaskListState extends State<TaskList> {
             child: Icon(Icons.add),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddOrEditTask(Task('','',DateTime.now().toIso8601String(),3))),
+              MaterialPageRoute(builder: (context) => AddOrEditTask(Task('','',DateTime.now().toIso8601String(),3),false)),
               // (Route<dynamic> route) => false,
             ),
           ),
@@ -78,8 +78,10 @@ class _TaskListState extends State<TaskList> {
                 },
               ),
               onTap: () {
-                debugPrint('I was tapped, help!, my details are card number ' +
-                    (position + 1).toString());
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddOrEditTask(tasks[position],true)),
+                );
               },
             ),
           );
