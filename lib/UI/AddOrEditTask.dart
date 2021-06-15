@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_todo_list/Models/Task.dart';
 import 'package:date_field/date_field.dart';
@@ -18,7 +19,6 @@ class _AddOrEditTaskState extends State<AddOrEditTask> {
   _AddOrEditTaskState(this.task,this.isUpdate);
 
   var formKey = GlobalKey<FormState>();
-  String dropdownValue = "Low";
   String dateTimeVal = DateTime.now().toIso8601String();
   SqlUtil sqlUtil = SqlUtil();
   TextEditingController titleController = TextEditingController();
@@ -49,7 +49,6 @@ class _AddOrEditTaskState extends State<AddOrEditTask> {
                     return "Please enter the title";
                   return null;
                 },
-                autofocus: true,
                 maxLength: 255,
                 decoration: InputDecoration(
                     labelText: "Title",
@@ -105,14 +104,13 @@ class _AddOrEditTaskState extends State<AddOrEditTask> {
                         labelText: 'Priority',
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0))),
-                    isEmpty: dropdownValue == '',
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        value: dropdownValue,
+                        value: Task.priorities[task.priority-1],
                         isDense: true,
                         onChanged: (String? newVal) {
                           setState(() {
-                            dropdownValue = newVal.toString();
+                            task.priority = _priorityStringToInt(newVal.toString());
                             task.name = titleController.text;
                             task.description = descriptionController.text;
                             task.dueDateTime = dateTimeVal.toString();
@@ -163,7 +161,6 @@ class _AddOrEditTaskState extends State<AddOrEditTask> {
                             }
 
                             if(isValid){
-                              task.priority = _priorityStringToInt(dropdownValue);
                               task.name = titleController.text;
                               task.description = descriptionController.text;
                               task.dueDateTime = dateTimeVal;
@@ -197,5 +194,6 @@ class _AddOrEditTaskState extends State<AddOrEditTask> {
       case "High":
         return 1;
     }
+    return 3;
   }
 }
