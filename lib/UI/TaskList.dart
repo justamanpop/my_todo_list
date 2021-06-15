@@ -46,7 +46,7 @@ class _TaskListState extends State<TaskList> {
             child: Icon(Icons.add),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddOrEditTask(Task('','','',3))),
+              MaterialPageRoute(builder: (context) => AddOrEditTask(Task('','',DateTime.now().toIso8601String(),3))),
               // (Route<dynamic> route) => false,
             ),
           ),
