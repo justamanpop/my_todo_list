@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:my_todo_list/UI/AddOrEditTask.dart';
 import 'package:my_todo_list/UI/SqlTest.dart';
 import 'package:my_todo_list/utils/sqlutil.dart';
 import 'package:my_todo_list/Models/Task.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 class TaskList extends StatefulWidget {
   const TaskList({Key? key}) : super(key: key);
@@ -16,6 +21,24 @@ class _TaskListState extends State<TaskList> {
   int count = 0;
   ListView taskListView = ListView();
   List<Task> tasks = [];
+  FlutterLocalNotificationsPlugin? flutterNotification;
+
+  @override
+  void initState() {
+    super.initState();
+
+    var androidInitialize = AndroidInitializationSettings("todolist");
+    var iosInitialize = IOSInitializationSettings();
+    var initializationSettings = InitializationSettings(
+        android: androidInitialize, iOS: iosInitialize);
+
+    flutterNotification = FlutterLocalNotificationsPlugin();
+    flutterNotification!.initialize(
+        initializationSettings, onSelectNotification: notificationSelected);
+
+    timeZoneInitializationMethod();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +56,11 @@ class _TaskListState extends State<TaskList> {
           FloatingActionButton(
             heroTag: 'TestingPage',
             child: Icon(Icons.storage),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SqlTest()),
-            ),
+            onPressed: () =>
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SqlTest()),
+                ),
           ),
           SizedBox(
             height: 20,
@@ -44,14 +68,20 @@ class _TaskListState extends State<TaskList> {
           FloatingActionButton(
             heroTag: 'AddPage',
             child: Icon(Icons.add),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AddOrEditTask(Task('','',DateTime.now().toIso8601String(),3),false)),
-              // (Route<dynamic> route) => false,
-            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>
+                      AddOrEditTask(
+                          Task('', '', DateTime.now().toIso8601String(), 3),
+                          false)));
+            },
+            // (Route<dynamic> route) => false,
           ),
-        ],
-      ),
+        ]
+        ,
+      )
+      ,
     );
   }
 
@@ -79,8 +109,9 @@ class _TaskListState extends State<TaskList> {
               ),
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddOrEditTask(tasks[position],true)),
+                  context,
+                  MaterialPageRoute(builder: (context) =>
+                      AddOrEditTask(tasks[position], true)),
                 );
               },
             ),
@@ -105,12 +136,12 @@ class _TaskListState extends State<TaskList> {
       actions: [
         TextButton(
             onPressed: () {
-
               Navigator.of(context).pop();
             },
             child: Text('Cancel')),
         TextButton(
-            onPressed: () async{
+            onPressed: () async {
+              flutterNotification?.cancel(idToDelete);
               await sqlUtil.deleteFromDb(idToDelete);
               await getData();
               Navigator.of(context).pop();
@@ -124,6 +155,17 @@ class _TaskListState extends State<TaskList> {
         builder: (BuildContext context) {
           return alert;
         });
-
   }
+
+  void timeZoneInitializationMethod() async{
+    tz.initializeTimeZones();
+    final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timeZoneName));
+  }
+
+  Future notificationSelected(String? payload) async
+  {
+    debugPrint("I do nothing yet");
+  }
+
 }
